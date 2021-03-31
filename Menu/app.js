@@ -88,6 +88,7 @@ const filterBtns = document.querySelectorAll(".filter-btn")
 
 window.addEventListener("DOMContentLoaded", () => {
   displayMenuItem(menu);
+  diaplayMenuButtons();
   
 })
 
@@ -110,5 +111,35 @@ const displayMenuItem = (menuItems) => {
   displayMenu = displayMenu.join("");
   sectionCenter.innerHTML = displayMenu
 
+}
+
+const diaplayMenuButtons = () => {
+  const categories = menu.reduce((values, item) => {
+    if(!values.includes(item.category)) {
+      values.push(item.category);
+    }
+    console.log(values)
+    return values
+   }, ['all']);
+     const categoryBtns = categories.map((category) => {
+     return `<button type="button" class="filter-btn" data-id=${category}>${category}</button>`
+       }).join('');
+       container.innerHTML = categoryBtns
+       const filterBtns = document.querySelectorAll(".filter-btn")
+       filterBtns.forEach((btn) => {
+         btn.addEventListener("click", (e) => {
+          const category = e.currentTarget.dataset.id;
+          const menucategory = menu.filter((item) => {
+               if(item.category === category) {
+                 return item
+               }
+           });
+           if(category === "all") {
+           displayMenuItem(menu)
+           } else {
+           displayMenuItem(menucategory)
+           }
+         })
+       })
 }
 
